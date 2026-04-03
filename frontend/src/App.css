@@ -1,387 +1,269 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+﻿/* App.css - Refined UI */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
 
-html, body, #root {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
+:root {
+  --bg-midnight: #0b0e14;
+  --card-bg: #161b22;
+  --card-border: #30363d;
+  --accent-primary: #58a6ff;
+  --accent-secondary: #bc8cff;
+  --text-white: #f0f6fc;
+  --text-gray: #8b949e;
+  --gradient-main: linear-gradient(135deg, #58a6ff 0%, #bc8cff 100%);
 }
 
 body {
-  font-family: 'Poppins', 'Segoe UI', Roboto, sans-serif;
-  background: #f8fafc;
-  color: #1f2937;
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--bg-midnight);
+  color: var(--text-white);
 }
 
-* {
-  box-sizing: border-box;
-}
-
+/* --- Fixed App Shell & Footer --- */
 .app-shell {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: #f8fafc;
-}
-
-.app-header {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 20px;
-  background: linear-gradient(90deg, #106EBE 0%, #106EBE 100%);
-  color: #ffffff;
-  box-shadow: 0 8px 18px rgba(16, 110, 190, 0.2);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
-  backdrop-filter: blur(5px);
-}
-
-.logo-text {
-  font-weight: 800;
-  font-size: 1.35rem;
-  color: #ffffff;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-}
-
-.logo-lockup {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.header-nav {
-  display: flex;
-  gap: 10px;
-}
-
-.nav-item, .header-btn {
-  background: transparent;
-  border: 1px solid transparent;
-  color: #ffffff;
-  padding: 8px 11px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.2s ease;
-}
-
-.nav-item:hover, .header-btn:hover {
-  border-color: rgba(255,255,255,0.45);
-  color: #ffffff;
-  transform: translateY(-1px);
-  background: rgba(16, 110, 190, 0.3);
-}
-
-.header-btn-primary {
-  background: #106EBE;
-  color: white;
-  border-color: transparent;
-  box-shadow: 0 6px 14px rgba(16, 110, 190, 0.3);
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.profile-dropdown-wrapper {
-  position: relative;
-}
-
-.profile-avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 999px;
-  border: 1px solid #bfdbfe;
-  background: #eff6ff;
-  color: #1e40af;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.profile-dropdown {
-  position: absolute;
-  right: 0;
-  top: 46px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 8px 22px rgba(15,23,42,0.15);
-  padding: 8px 0;
-  width: 160px;
-  opacity: 0;
-  transform: translateY(-10px);
-  pointer-events: none;
-  transition: all 0.2s ease;
-  border: 1px solid #e2e8f0;
-}
-
-.profile-dropdown.open {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-.profile-dropdown button {
-  width: 100%;
-  padding: 10px 12px;
-  background: transparent;
-  color: #334155;
-  border: none;
-  text-align: left;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.profile-dropdown button:hover {
-  background: #f1f5f9;
-}
-
-.app-footer {
-  background: linear-gradient(90deg, #106EBE 0%, #106EBE 100%);
-  text-align: center;
-  padding: 16px 14px;
-  color: #ffffff;
-  border-top: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.08);
-  margin-top: auto;
-}
-
-.footer-title {
-  display: none;
-  margin: 0;
-  font-weight: 700;
-  color: #1d4ed8;
-}
-
-.footer-tagline {
-  display: none;
-}
-
-.footer-links {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.footer-links a {
-  color: #ffffff;
-  text-decoration: none;
-}
-
-.hero {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  gap: 18px;
-  padding: 60px 20px;
-}
-
-.hero-title {
-  font-size: clamp(2rem, 6vw, 3.6rem);
-  margin: 0;
-  font-weight: 900;
-  color: #0369a1;
-}
-
-.hero-subtitle {
-  font-size: 1.2rem;
-  color: #475569;
-  margin: 0;
-}
-
-.btn-primary {
-  border-radius: 10px;
-  border: none;
-  background: #106EBE;
-  color: white;
-  padding: 11px 18px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: transform 0.2s ease, filter 0.2s ease;
-}
-
-.btn-primary:hover {
-  transform: scale(1.02);
-  filter: brightness(1.05);
 }
 
 .content-area {
   flex: 1;
-  width: min(1100px, 100%);
-  margin: 24px auto;
-  padding: 0 16px 32px;
-  display: flex;
-  flex-direction: column;
-}
-
-.auth-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.auth-card {
-  width: min(430px, 95vw);
-  background: rgba(255, 255, 255, 0.95);
-  padding: 24px;
-  border-radius: 14px;
-  box-shadow: 0 8px 26px rgba(15,23,42,0.15);
-  border: 1px solid #e2e8f0;
-}
-
-.auth-form {
-  display: grid;
-  gap: 12px;
-  margin-top: 20px;
-}
-
-.input-field {
+  max-width: 1100px;
   width: 100%;
-  padding: 12px 14px;
-  border: 1px solid #cbd5e1;
-  border-radius: 10px;
-  background: #f8fafc;
-  color: #0f172a;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  margin: 0 auto;
+  padding: 40px 20px;
 }
 
-.input-field::placeholder {
-  color: #94a3b8;
-}
-
-.input-field:focus {
-  outline: none;
-  border-color: #106EBE;
-  box-shadow: 0 0 0 4px rgba(16, 110, 190, 0.2);
-}
-
-.auth-toggle {
-  margin-top: 14px;
-  color: #475569;
-}
-
-.auth-link {
-  background: none;
-  border: none;
-  color: #2563eb;
-  cursor: pointer;
-  font-size: 0.95rem;
-  text-decoration: underline;
-}
-
-.dashboard-area {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  flex: 1;
-}
-
-.dashboard-top {
+/* --- Clean Navigation --- */
+/* --- Header Styling --- */
+.app-header {
+  background-color: #75d2ee; /* Dark background */
+  border-bottom: 1px solid #30363d; /* Subtle bottom separator */
+  color: #ffffff;
+  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
+  position: sticky; /* Keeps it at the top while scrolling */
+  top: 0;
+  z-index: 1000;
 }
 
-.welcome-title {
-  margin: 0;
-  color: #1d4ed8;
+/* --- Footer Styling --- */
+.app-footer {
+  background-color: #34f4f8; /* Matches the header for consistency */
+  border-top: 1px solid #73a6e1;
+  color: #8b949e; /* Dimmed text for the footer */
+  padding: 2rem;
+  text-align: center;
+  margin-top: auto; /* Pushes footer to bottom of flex container */
 }
 
-.summary-card, .form-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(15,23,42,0.08);
-  padding: 18px;
+/* Optional: Change the color of links in the footer */
+.footer-links a {
+  color: #58a6ff; /* A professional blue */
+  text-decoration: none;
+  margin: 0 10px;
+  font-size: 0.9rem;
 }
-
-.transaction-form {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-  align-items: center;
-}
-
-.section-title {
-  font-size: 1.2rem;
-  color: #1d4ed8;
-  margin: 0;
-}
-
-.transaction-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 10px;
-  padding: 12px;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 12px rgba(15,23,42,0.06);
-}
-
-.tag {
-  margin-left: 8px;
-  color: #64748b;
-  background: #f1f5f9;
-  border-radius: 8px;
-  padding: 2px 6px;
-  font-size: 0.75rem;
-}
-
-.del-btn {
-  margin-left: 10px;
-  border: none;
-  background: transparent;
-  color: #ef4444;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-/* Removed .app-footer as it is now handled by Tailwind classes */
 
 .footer-links a:hover {
   text-decoration: underline;
 }
 
-@media (max-width: 768px) {
-  .app-header {
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-  }
+.header-nav {
+  display: flex;
+  gap: 30px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
 
-  .header-nav {
-    width: 100%;
-    justify-content: center;
-    order: 3;
-  }
+.nav-item {
+  background: none;
+  border: none;
+  color: var(--text-gray);
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: 0.3s;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
 
-  .header-left {
-    width: 100%;
-    justify-content: center;
-    display: flex;
-  }
+.nav-item:hover {
+  color: var(--text-white);
+  background: rgba(255, 255, 255, 0.05);
+}
 
-  .header-right {
-    width: 100%;
-    justify-content: center;
-  }
+/* --- High-Quality Buttons --- */
+.header-btn, .btn-primary {
+  background: var(--gradient-main);
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
 
-  .content-area {
-    margin: 16px auto;
-    padding: 0 12px 24px;
-  }
+.header-btn-outline {
+  background: transparent;
+  border: 1px solid var(--card-border);
+  color: var(--text-white);
+  margin-right: 12px;
+}
 
-  .transaction-form {
-    grid-template-columns: 1fr;
+.header-btn:hover, .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(88, 166, 255, 0.3);
+}
+
+/* --- Hero & Visual Fix --- */
+.hero-section-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  padding-top: 80px;
+}
+
+.hero-content { flex: 1.2; }
+
+.hero-visual-area {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+/* The "Circle" - Refined into a glowing abstract visual */
+.mern-visual-wrapper {
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(188, 140, 255, 0.1) 0%, transparent 70%);
+  border: 2px dashed rgba(188, 140, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  animation: rotate 20s linear infinite;
+}
+
+.mern-visual-wrapper::before {
+  content: "📊";
+  font-size: 4rem;
+  animation: counter-rotate 20s linear infinite;
+}
+
+@keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes counter-rotate { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+
+/* --- Footer --- */
+.app-footer {
+  padding: 40px;
+  text-align: center;
+  border-top: 1px solid var(--card-border);
+  background: var(--bg-midnight);
+}
+/* Styling for the Hero Visual Area */
+/* Container for the visual side */
+.hero-section-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  padding: 80px 0;
+}
+
+.hero-visual-area {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* Main Dashboard Layout */
+.dashboard-grid {
+  display: flex;
+  flex-direction: row; /* Puts them side by side */
+  gap: 30px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: flex-start; /* Keeps tops aligned */
+}
+
+/* Left side (Graph) takes up 60% */
+.grid-left {
+  flex: 1.5; 
+}
+
+/* Right side (Form/List) takes up 40% */
+.grid-right {
+  flex: 1;
+}
+
+/* Card Styling for both sides */
+.glass-card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+/* Vertical Form for a cleaner look */
+.transaction-form-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* Responsive: Stack them on mobile phones */
+@media (max-width: 900px) {
+  .dashboard-grid {
+    flex-direction: column;
   }
+}
+/* CLIPPING THE IMAGE INTO A CIRCLE */
+.circular-clipper {
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  overflow: hidden; /* This makes the image a circle */
+  border: 2px dashed rgba(188, 140, 255, 0.4);
+  background: #161b22;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  box-shadow: 0 0 40px rgba(188, 140, 255, 0.2);
+}
+
+.inner-hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures it fills the circle perfectly */
+}
+
+.hero-glow-effect {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(188, 140, 255, 0.1) 0%, transparent 70%);
+  z-index: 1;
+}
+
+/* Auth and other components */
+.input-field {
+  background: #0b0e14;
+  border: 1px solid #30363d;
+  color: white;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
 }
