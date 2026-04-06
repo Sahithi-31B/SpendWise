@@ -40,7 +40,9 @@ const Header = ({ user, onNavigate, onLogin, onSignup, onLogout }) => (
   <header className="app-header">
     <div className="header-left">
       <div className="logo-lockup" onClick={() => onNavigate('landing')} style={{cursor: 'pointer'}}>
-        <span className="logo-text">SpendWise 💸</span>
+        <span className="logo-text">
+          <span className="logo-brand">Spend</span><span className="logo-highlight">Wise</span><span className="logo-icon" aria-hidden="true"> 💸</span>
+        </span>
       </div>
     </div>
 
@@ -64,7 +66,7 @@ const Header = ({ user, onNavigate, onLogin, onSignup, onLogout }) => (
 );
 
 const Footer = () => (
-  <footer className="app-footer">
+  <footer className="app-footer footer">
     <div className="footer-links">
       <a href="#privacy">Privacy Policy</a>
       <a href="#contact">Contact</a>
@@ -177,7 +179,7 @@ function App() {
           >
             <div className="hero-content">
               <h1 className="hero-title">Master Your Money</h1>
-              <p className="hero-subtitle">Smart visual tracking for expenses and subscriptions.</p>
+              <p className="hero-subtitle">Smart visual tracker for expenses and subscriptions.</p>
               <button className="btn-primary" onClick={() => setView('signup')}>Start Free Trial →</button>
             </div>
             <HeroVisual />
@@ -195,10 +197,19 @@ function App() {
               <h2>{view === 'login' ? 'Welcome Back' : 'Join SpendWise'}</h2>
               <form onSubmit={handleAuth} className="auth-form">
                 {view === 'signup' && (
-                  <input className="input-field" placeholder="Full Name" value={authForm.name} onChange={(e) => setAuthForm({ ...authForm, name: e.target.value })} required />
+                  <div className="auth-field">
+                    <label className="auth-label" htmlFor="auth-name">Full Name</label>
+                    <input id="auth-name" className="input-field" value={authForm.name} onChange={(e) => setAuthForm({ ...authForm, name: e.target.value })} required />
+                  </div>
                 )}
-                <input className="input-field" type="email" placeholder="Email Address" value={authForm.email} onChange={(e) => setAuthForm({ ...authForm, email: e.target.value })} required />
-                <input className="input-field" type="password" placeholder="Password" value={authForm.password} onChange={(e) => setAuthForm({ ...authForm, password: e.target.value })} required />
+                <div className="auth-field">
+                  <label className="auth-label" htmlFor="auth-email">Email</label>
+                  <input id="auth-email" className="input-field" type="email" value={authForm.email} onChange={(e) => setAuthForm({ ...authForm, email: e.target.value })} required />
+                </div>
+                <div className="auth-field">
+                  <label className="auth-label" htmlFor="auth-password">Password</label>
+                  <input id="auth-password" className="input-field" type="password" value={authForm.password} onChange={(e) => setAuthForm({ ...authForm, password: e.target.value })} required />
+                </div>
                 <button className="btn-primary" type="submit">{view === 'login' ? 'Login' : 'Create Account'}</button>
               </form>
               <button className="auth-link" onClick={() => setView(view === 'login' ? 'signup' : 'login')}>
@@ -270,7 +281,7 @@ case 'dashboard':
         onSignup={() => setView('signup')} 
         onLogout={handleLogout} 
       />
-      <main className="content-area">
+      <main className={`content-area ${view === 'landing' ? 'landing-content' : ''} ${view === 'about' ? 'about-content' : ''}`}>
         {renderContent()}
       </main>
       <Footer />

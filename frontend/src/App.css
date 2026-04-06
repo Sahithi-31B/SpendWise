@@ -2,21 +2,80 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
 
 :root {
-  --bg-midnight: #0b0e14;
-  --card-bg: #161b22;
-  --card-border: #30363d;
-  --accent-primary: #58a6ff;
-  --accent-secondary: #bc8cff;
-  --text-white: #f0f6fc;
-  --text-gray: #8b949e;
-  --gradient-main: linear-gradient(135deg, #58a6ff 0%, #bc8cff 100%);
+  --bg-midnight: #BDDDFC;
+  --card-bg: #FFFFFF;
+  --card-border: rgba(0, 171, 228, 0.35);
+  --accent-primary: #00ABE4;
+  --accent-secondary: #00ABE4;
+  --text-white: #FFFFFF;
+  --text-gray: #00ABE4;
+  --gradient-main: linear-gradient(135deg, #00ABE4 0%, #FFFFFF 100%);
 }
 
 body {
   margin: 0;
   font-family: 'Plus Jakarta Sans', sans-serif;
-  background-color: var(--bg-midnight);
-  color: var(--text-white);
+  background:
+    linear-gradient(180deg, #d9ebfb 0%, #BDDDFC 48%, #cbe3f8 100%);
+  color: #111111;
+  overflow-x: hidden;
+}
+
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+}
+
+body::before {
+  background:
+    linear-gradient(96deg, transparent 0 24%, rgba(0, 48, 73, 0.055) 24% 24.7%, transparent 24.7% 100%),
+    linear-gradient(96deg, transparent 0 38%, rgba(0, 48, 73, 0.045) 38% 38.6%, transparent 38.6% 100%),
+    linear-gradient(96deg, transparent 0 52%, rgba(0, 48, 73, 0.045) 52% 52.9%, transparent 52.9% 100%),
+    linear-gradient(96deg, transparent 0 66%, rgba(0, 48, 73, 0.04) 66% 66.8%, transparent 66.8% 100%);
+  animation: bubblesFloatUp 14s ease-in-out infinite alternate;
+}
+
+body::after {
+  background:
+    linear-gradient(180deg, transparent 0 42%, rgba(0, 119, 182, 0.045) 42% 42.4%, transparent 42.4% 100%),
+    linear-gradient(180deg, transparent 0 58%, rgba(0, 119, 182, 0.04) 58% 58.35%, transparent 58.35% 100%);
+  animation: bubblesFloatDown 18s ease-in-out infinite alternate;
+}
+
+@keyframes bubblesFloatUp {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(-18px);
+  }
+}
+
+@keyframes bubblesFloatDown {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+  100% {
+    transform: translateY(14px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before,
+  body::after {
+    animation: none;
+  }
 }
 
 /* --- Fixed App Shell & Footer --- */
@@ -24,6 +83,8 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  position: relative;
+  z-index: 1;
 }
 
 .content-area {
@@ -34,40 +95,55 @@ body {
   padding: 40px 20px;
 }
 
+.content-area.landing-content {
+  font-size: 1.6rem;
+}
+
+.content-area.about-content {
+  font-size: 1.1rem;
+}
+
 /* --- Clean Navigation --- */
 /* --- Header Styling --- */
 .app-header {
-  background-color: #75d2ee; /* Dark background */
-  border-bottom: 1px solid #30363d; /* Subtle bottom separator */
+  background-color: #003049;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
   color: #ffffff;
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: sticky; /* Keeps it at the top while scrolling */
-  top: 0;
-  z-index: 1000;
 }
 
 /* --- Footer Styling --- */
 .app-footer {
-  background-color: #34f4f8; /* Matches the header for consistency */
-  border-top: 1px solid #73a6e1;
-  color: #8b949e; /* Dimmed text for the footer */
+  background-color: #003049;
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+  color: #FFFFFF;
   padding: 2rem;
   text-align: center;
   margin-top: auto; /* Pushes footer to bottom of flex container */
 }
 
+.footer {
+  background-color: #003049 !important;
+  color: #FFFFFF !important;
+}
+
+.footer * {
+  color: #FFFFFF !important;
+}
+
 /* Optional: Change the color of links in the footer */
 .footer-links a {
-  color: #58a6ff; /* A professional blue */
+  color: #E9F1FA !important;
   text-decoration: none;
   margin: 0 10px;
   font-size: 0.9rem;
 }
 
 .footer-links a:hover {
+  color: #FFFFFF !important;
   text-decoration: underline;
 }
 
@@ -82,7 +158,7 @@ body {
 .nav-item {
   background: none;
   border: none;
-  color: var(--text-gray);
+  color: #E9F1FA;
   font-family: inherit;
   font-weight: 600;
   font-size: 0.95rem;
@@ -94,13 +170,44 @@ body {
 
 .nav-item:hover {
   color: var(--text-white);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.logo-lockup {
+  display: flex;
+  align-items: center;
+}
+
+.logo-text {
+  display: inline-flex;
+  align-items: center;
+  color: #FFFFFF;
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.logo-brand {
+  color: #FFFFFF;
+}
+
+.logo-highlight {
+  color: #F4FBFF;
+  font-weight: 700;
+}
+
+.logo-icon {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  transform: translateY(1px);
 }
 
 /* --- High-Quality Buttons --- */
 .header-btn, .btn-primary {
-  background: var(--gradient-main);
-  color: white;
+  background: #FFFFFF;
+  color: #00ABE4;
   border: none;
   padding: 10px 24px;
   border-radius: 8px;
@@ -111,14 +218,19 @@ body {
 
 .header-btn-outline {
   background: transparent;
-  border: 1px solid var(--card-border);
-  color: var(--text-white);
+  border: 1px solid #FFFFFF;
+  color: #FFFFFF;
   margin-right: 12px;
 }
 
 .header-btn:hover, .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(88, 166, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 171, 228, 0.4);
+}
+
+.hero-content .btn-primary {
+  background: #00ABE4;
+  color: #FFFFFF;
 }
 
 /* --- Hero & Visual Fix --- */
@@ -142,8 +254,8 @@ body {
   width: 350px;
   height: 350px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(188, 140, 255, 0.1) 0%, transparent 70%);
-  border: 2px dashed rgba(188, 140, 255, 0.3);
+  background: radial-gradient(circle, rgba(0, 171, 228, 0.2) 0%, transparent 70%);
+  border: 2px dashed rgba(0, 171, 228, 0.45);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -165,8 +277,8 @@ body {
 .app-footer {
   padding: 40px;
   text-align: center;
-  border-top: 1px solid var(--card-border);
-  background: var(--bg-midnight);
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+  background: #003049;
 }
 /* Styling for the Hero Visual Area */
 /* Container for the visual side */
@@ -208,11 +320,11 @@ body {
 
 /* Card Styling for both sides */
 .glass-card {
-  background: #161b22;
-  border: 1px solid #30363d;
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 171, 228, 0.35);
   border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 32px rgba(0, 171, 228, 0.16);
 }
 
 /* Vertical Form for a cleaner look */
@@ -235,13 +347,13 @@ body {
   height: 380px;
   border-radius: 50%;
   overflow: hidden; /* This makes the image a circle */
-  border: 2px dashed rgba(188, 140, 255, 0.4);
-  background: #161b22;
+  border: 2px dashed rgba(0, 171, 228, 0.45);
+  background: #FFFFFF;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 2;
-  box-shadow: 0 0 40px rgba(188, 140, 255, 0.2);
+  box-shadow: 0 0 40px rgba(0, 171, 228, 0.2);
 }
 
 .inner-hero-image {
@@ -254,16 +366,95 @@ body {
   position: absolute;
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(188, 140, 255, 0.1) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(0, 171, 228, 0.14) 0%, transparent 70%);
   z-index: 1;
+}
+
+/* Auth layout */
+.auth-page {
+  min-height: 68vh;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 430px;
+  background: #F7FBFF;
+  border: 1px solid rgba(0, 171, 228, 0.2);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 12px 30px rgba(0, 48, 73, 0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.auth-card h2 {
+  margin: 0 0 4px;
+  text-align: center;
+  color: #003049;
+}
+
+.auth-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-field {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.auth-label {
+  color: #003049;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 /* Auth and other components */
 .input-field {
-  background: #0b0e14;
-  border: 1px solid #30363d;
-  color: white;
-  padding: 10px;
-  border-radius: 6px;
-  margin-bottom: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 48, 73, 0.45);
+  color: #003049;
+  padding: 11px 12px;
+  border-radius: 8px;
+  margin: 0;
+}
+
+.auth-form .btn-primary {
+  background: #0077B6;
+  color: #FFFFFF;
+  border: 1px solid #0077B6;
+  align-self: center;
+  margin-top: 6px;
+  box-shadow: 0 8px 18px rgba(0, 119, 182, 0.24);
+}
+
+.auth-form .btn-primary:hover {
+  background: #00639A;
+  border-color: #00639A;
+}
+
+.auth-link {
+  background: none;
+  border: none;
+  color: #005f91;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
 }
