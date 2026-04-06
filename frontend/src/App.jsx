@@ -144,10 +144,10 @@ function App() {
   };
 
   const handleLogout = () => {
-    setUser(null);
-    setItems([]); 
-    setSummary({ totalSpent: 0 }); 
-    setView('landing');
+  setUser(null);
+  setItems([]); 
+  setSummary({ totalSpent: 0 }); // This fixes the 200/old data showing up
+  setView('landing');
   };
 
   const handleNavigate = (target) => {
@@ -223,17 +223,16 @@ function App() {
 case 'dashboard':
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="dashboard-container">
-      {/* Top Welcome Header */}
       <div className="dashboard-header">
         <h2 className="welcome-title">Namaste, {user}! 🙏</h2>
         <div className="summary-mini-card">
           <span>Total Spent:</span>
-          <b>₹{summary.totalSpent?.toLocaleString()}</b>
+          {/* Default to 0 if summary is empty */}
+          <b>₹{(summary.totalSpent || 0).toLocaleString()}</b>
         </div>
       </div>
 
       <div className="dashboard-grid">
-        {/* LEFT SIDE: The Graph */}
         <div className="grid-left">
           <div className="glass-card chart-card">
             <h3>Expense Breakdown</h3>
@@ -243,7 +242,6 @@ case 'dashboard':
           </div>
         </div>
 
-        {/* RIGHT SIDE: The Form and List */}
         <div className="grid-right">
           <div className="glass-card entry-card">
             <h3>Add New Transaction</h3>
@@ -259,7 +257,31 @@ case 'dashboard':
 
             <div className="recent-activity-list">
               <h4>Recent Activity</h4>
-              {/* Map your items here like before */}
+              <div className="activity-scroll">
+                {items.length === 0 ? (
+                  <p className="empty-msg">No transactions yet. Start adding!</p>
+                ) : (
+                  items.map((item) => (
+                    <div key={item._id} className="activity-item">
+                      <div className="item-info">
+                        <span className="item-title">{item.title}</span>
+                        <span className="item-category">{item.category}</span>
+                      </div>
+                      <div className="item-actions">
+                        <span className="item-amount">₹{item.amount}</span>
+                        {/* DELETE BUTTON */}
+                        <button 
+                          className="delete-btn" 
+                          onClick={() => deleteItem(item._id)}
+                          title="Delete entry"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
           </div>
         </div>

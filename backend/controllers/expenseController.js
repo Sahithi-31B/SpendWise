@@ -45,6 +45,23 @@ exports.deleteExpense = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+exports.updateExpense = async (req, res) => {
+    try {
+        const { title, amount, type } = req.body;
+        const updated = await Expense.findByIdAndUpdate(
+            req.params.id,
+            { 
+              title, 
+              amount: Number(amount), 
+              category: type === 'subscription' ? 'Subscription' : 'General' 
+            },
+            { new: true }
+        );
+        res.json(updated);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+};
 
 // 4. Financial Analytics (SRS Section 8: "View expense summary")
 exports.getSummary = async (req, res) => {

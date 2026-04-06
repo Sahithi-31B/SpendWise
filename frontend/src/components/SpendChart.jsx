@@ -31,13 +31,11 @@ const SpendChart = ({ items }) => {
   };
 
   return (
-    <div style={{ height: '250px', position: 'relative' }}>
-      <Doughnut data={data} options={options} />
-      <div className="chart-center">
-        <p>Expenses</p>
-      </div>
-    </div>
-  );
+  <div style={{ height: '250px', position: 'relative' }}>
+    <Doughnut data={data} options={options} />
+    {/* REMOVED: The <div className="chart-center"> was causing the overlap */}
+  </div>
+);
 };
 
 export default SpendChart;
