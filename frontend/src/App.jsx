@@ -158,6 +158,7 @@ function App() {
   };
 
   const deleteItem = async (id) => {
+    if(!window.confirm("Are you sure you want to delete this entry?")) return;
     try {
       await axios.delete(`${API_BASE}/${id}`);
       fetchData();
@@ -205,16 +206,16 @@ function App() {
                 {view === 'signup' && (
                   <div className="auth-field">
                     <label>Full Name</label>
-                    <input className="input-field" value={authForm.name} onChange={(e) => setAuthForm({ ...authForm, name: e.target.value })} required />
+                    <input className="input-field" id="auth-name" value={authForm.name} onChange={(e) => setAuthForm({ ...authForm, name: e.target.value })} required />
                   </div>
                 )}
                 <div className="auth-field">
                   <label>Email</label>
-                  <input className="input-field" type="email" value={authForm.email} onChange={(e) => setAuthForm({ ...authForm, email: e.target.value })} required />
+                  <input className="input-field" id="auth-email" type="email" value={authForm.email} onChange={(e) => setAuthForm({ ...authForm, email: e.target.value })} required />
                 </div>
                 <div className="auth-field">
                   <label>Password</label>
-                  <input className="input-field" type="password" value={authForm.password} onChange={(e) => setAuthForm({ ...authForm, password: e.target.value })} required />
+                  <input className="input-field" id="auth-password" type="password" value={authForm.password} onChange={(e) => setAuthForm({ ...authForm, password: e.target.value })} required />
                 </div>
                 <button className="btn-primary" type="submit">{view === 'login' ? 'Login' : 'Create Account'}</button>
               </form>
@@ -225,34 +226,27 @@ function App() {
       case 'dashboard':
         return (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="dashboard-container">
-            <h2 className="welcome-title">Add Transactions, {user}! 🙏</h2>
+            <h2 className="welcome-title">Welcome back, {user}! 🙏</h2>
             
-            <div className="dashboard-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
+            <div className="dashboard-grid">
               <div className="grid-left">
                 {/* FINANCIAL OVERVIEW */}
-                <div className="glass-card budget-card" style={{ marginBottom: '2rem' }}>
-                   <h3 style={{ marginBottom: '1.5rem' }}>Financial Overview</h3>
+                <div className="glass-card budget-card">
+                   <h3>Financial Overview</h3>
                    <div className="budget-controls-vertical">
-                        <div className="budget-input-group" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <label style={{ whiteSpace: 'nowrap' }}>Monthly Budget (₹): </label>
+                        <div className="budget-input-group">
+                            <label>Monthly Budget (₹): </label>
                             <input 
                               type="number" 
-                              className="input-field"
-                              style={{ flex: 1, margin: 0, padding: '8px' }}
+                              className="input-field budget-input"
                               value={budgetInput} 
                               onChange={(e) => setBudgetInput(e.target.value)} 
                             />
-                            <button 
-                              className="btn-primary" 
-                              style={{ padding: '8px 16px', fontSize: '0.9rem', whiteSpace: 'nowrap' }} 
-                              onClick={handleSetBudget}
-                            >
-                              Set Budget
-                            </button>
+                            <button className="btn-primary" onClick={handleSetBudget}>Set Budget</button>
                         </div>
-                        <div className="status-metrics" style={{ marginTop: '20px', display: 'flex', gap: '30px' }}>
-                            <p style={{ margin: 0 }}>Spent: <b style={{ fontSize: '1.1rem' }}>₹{summary.totalSpent || 0}</b></p>
-                            <p style={{ margin: 0 }}>Remaining: <b style={{ fontSize: '1.1rem', color: (monthlyBudget - (summary.totalSpent || 0)) < 0 ? '#ff4d4d' : 'inherit' }}>₹{(monthlyBudget - (summary.totalSpent || 0))}</b></p>
+                        <div className="status-metrics">
+                            <p>Spent: <b>₹{summary.totalSpent || 0}</b></p>
+                            <p>Remaining: <b style={{ color: (monthlyBudget - (summary.totalSpent || 0)) < 0 ? '#ff4d4d' : '#10b981' }}>₹{(monthlyBudget - (summary.totalSpent || 0))}</b></p>
                         </div>
                    </div>
                 </div>
@@ -272,10 +266,9 @@ function App() {
                 </div>
               </div>
 
-              {/* CHART CENTERED IN RIGHT COLUMN */}
-              <div className="grid-right" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%' }}>
+              <div className="grid-right">
                 <div className="glass-card chart-card">
-                  <h3 style={{ textAlign: 'center' }}>Expense Breakdown</h3>
+                  <h3>Expense Breakdown</h3>
                   <SpendChart items={items} />
                 </div>
               </div>
@@ -287,49 +280,66 @@ function App() {
         const remaining = monthlyBudget - (summary.totalSpent || 0);
         return (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="dashboard-container">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h2 className="welcome-title" style={{ margin: 0 }}>Financial Reports, {user}!</h2>
+            <div className="report-header-actions">
+              <h2 className="welcome-title">Financial Reports, {user}!</h2>
               <button className="btn-primary" onClick={handleDownloadPDF}>Download PDF Report</button>
             </div>
             
-            <div className="glass-card table-card" ref={reportRef} style={{ padding: '30px' }}>
-               {/* REPORT HEADER SUMMARY */}
-               <div className="report-pdf-header" style={{ marginBottom: '30px', borderBottom: '2px solid #eee', paddingBottom: '20px' }}>
-                  <h3 style={{ color: '#6366f1', marginBottom: '15px' }}>Monthly Summary</h3>
-                  <div style={{ display: 'flex', gap: '40px' }}>
-                    <div>
-                      <p style={{ fontSize: '0.9rem', color: '#666', margin: '0 0 5px 0' }}>Budget Limit</p>
-                      <b style={{ fontSize: '1.2rem' }}>₹{monthlyBudget}</b>
-                    </div>
-                    <div>
-                      <p style={{ fontSize: '0.9rem', color: '#666', margin: '0 0 5px 0' }}>Total Spent</p>
-                      <b style={{ fontSize: '1.2rem' }}>₹{summary.totalSpent || 0}</b>
-                    </div>
-                    <div>
-                      <p style={{ fontSize: '0.9rem', color: '#666', margin: '0 0 5px 0' }}>Balance Remaining</p>
-                      <b style={{ fontSize: '1.2rem', color: remaining < 0 ? '#ff4d4d' : '#10b981' }}>₹{remaining}</b>
-                    </div>
-                  </div>
-               </div>
+  <div className="glass-card table-card" ref={reportRef}>
+  <div className="report-pdf-header">
+  <h3 style={{ color: '#6366f1', marginBottom: '15px' }}>Monthly Summary</h3>
+  
+  {/* Added display: flex to align items horizontally */}
+  <div className="summary-stats" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <div className="stat-item">
+      <p>Budget Limit</p>
+      <b>₹{monthlyBudget}</b>
+    </div>
+    <div className="stat-item">
+      <p>Total Spent</p>
+      <b>₹{summary.totalSpent || 0}</b>
+    </div>
+    <div className="stat-item">
+      <p>Balance Remaining</p>
+      <b style={{ color: remaining < 0 ? '#ff4d4d' : '#10b981' }}>
+        ₹{remaining}
+      </b>
+    </div>
+  </div>
+</div>
 
-               <h3 style={{ marginBottom: '20px' }}>Recent Activity Detail</h3>
+               <h3>Recent Activity Detail</h3>
                <table className="activity-table">
                  <thead>
-                    <tr><th>Title</th><th>Category</th><th>Amount</th></tr>
+                    <tr>
+                      <th>Title</th>
+                      <th>Category</th>
+                      <th>Amount</th>
+                      <th style={{ textAlign: 'center' }}>Action</th>
+                    </tr>
                  </thead>
                  <tbody>
                     {items.map((item) => (
                         <tr key={item._id}>
                             <td>{item.title}</td>
-                            <td>{item.category}</td>
+                            <td><span className={`badge ${item.category}`}>{item.category}</span></td>
                             <td>₹{item.amount}</td>
+                            <td style={{ textAlign: 'center' }}>
+                              <button 
+                                className="delete-btn" 
+                                onClick={() => deleteItem(item._id)}
+                                title="Delete Entry"
+                              >
+                                ✕
+                              </button>
+                            </td>
                         </tr>
                     ))}
                  </tbody>
                </table>
                
                {items.length === 0 && (
-                 <p style={{ textAlign: 'center', color: '#999', marginTop: '20px' }}>No transactions found for this period.</p>
+                 <p className="empty-msg">No transactions found for this period.</p>
                )}
             </div>
           </motion.div>
@@ -339,7 +349,7 @@ function App() {
         return (
           <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="about-card">
             <h2>About SpendWise</h2>
-            <p>SpendWise is a high-performance spending tracker designed for the modern user.</p>
+            <p>SpendWise is a high-performance spending tracker designed for the modern user. Built with the MERN stack and framed for speed.</p>
           </motion.section>
         );
       default: return null;
