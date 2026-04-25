@@ -1,9 +1,8 @@
 const Expense = require('../models/Expense');
 
-// 1. Get all entries (Fetched for the Dashboard)
+// 1. Get all entries
 exports.getExpenses = async (req, res) => {
     try {
-        // Sort by date descending so the newest entry in ₹ appears first
         const expenses = await Expense.find().sort({ date: -1 });
         res.json(expenses);
     } catch (err) {
@@ -11,23 +10,19 @@ exports.getExpenses = async (req, res) => {
     }
 };
 
-// 2. Add a new entry (Handles both Activity Diagram paths: Expense & Subscription)
+// 2. Add a new entry
 exports.createExpense = async (req, res) => {
     try {
         const { title, amount, category, type } = req.body;
-
         if (!title || !amount) {
             return res.status(400).json({ message: "Description and Amount are required" });
         }
-
         const newEntry = new Expense({
             title,
-            amount: Number(amount), // Ensures clean math for Indian Rupee calculations
-            // Logic: If type is 'subscription', we force the category for easy filtering
+            amount: Number(amount),
             category: type === 'subscription' ? 'Subscription' : (category || 'General'),
             date: new Date()
         });
-
         await newEntry.save();
         res.status(201).json(newEntry);
     } catch (err) {
@@ -35,7 +30,7 @@ exports.createExpense = async (req, res) => {
     }
 };
 
-// 3. Delete an entry (Supports SRS Section 8: "Delete expenses")
+// 3. Delete an entry
 exports.deleteExpense = async (req, res) => {
     try {
         const result = await Expense.findByIdAndDelete(req.params.id);
@@ -45,16 +40,14 @@ exports.deleteExpense = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+
+// 4. Update an entry
 exports.updateExpense = async (req, res) => {
     try {
         const { title, amount, type } = req.body;
         const updated = await Expense.findByIdAndUpdate(
             req.params.id,
-            { 
-              title, 
-              amount: Number(amount), 
-              category: type === 'subscription' ? 'Subscription' : 'General' 
-            },
+            { title, amount: Number(amount), category: type === 'subscription' ? 'Subscription' : 'General' },
             { new: true }
         );
         res.json(updated);
@@ -63,20 +56,12 @@ exports.updateExpense = async (req, res) => {
     }
 };
 
-// 4. Financial Analytics (SRS Section 8: "View expense summary")
+// 5. Financial Analytics
 exports.getSummary = async (req, res) => {
     try {
         const allData = await Expense.find();
-        
-        // Calculate totals for daily spending vs recurring subscriptions
-        const totalExpenses = allData
-            .filter(item => item.category !== 'Subscription')
-            .reduce((sum, item) => sum + item.amount, 0);
-
-        const totalSubscriptions = allData
-            .filter(item => item.category === 'Subscription')
-            .reduce((sum, item) => sum + item.amount, 0);
-
+        const totalExpenses = allData.filter(item => item.category !== 'Subscription').reduce((sum, item) => sum + item.amount, 0);
+        const totalSubscriptions = allData.filter(item => item.category === 'Subscription').reduce((sum, item) => sum + item.amount, 0);
         res.json({
             totalSpent: totalExpenses + totalSubscriptions,
             expenseTotal: totalExpenses,
